@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwxqqiw8qo5cc"]
+
+[ext_resource type="Script" uid="uid://bd0agsia0ip35" path="res://data/arrow.gd" id="1_3pw4r"]
+[ext_resource type="Texture2D" uid="uid://cg8sya2gpeccb" path="res://assets/Player Sprites/Arrow(Projectile)/Arrow01(32x32).png" id="1_4yf74"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4yf74"]
+size = Vector2(20, 9)
+
+[node name="Arrow" type="Area2D"]
+texture_filter = 1
+script = ExtResource("1_3pw4r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4yf74")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_4yf74")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

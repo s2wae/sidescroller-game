@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ub2whn5wmbhc"]
+
+[ext_resource type="Texture2D" uid="uid://b8fi6xne0toyb" path="res://assets/Obstacle Sprites/Props-Rocks.png" id="1_bpoff"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wmx41"]
+atlas = ExtResource("1_bpoff")
+region = Rect2(208.774, 192.408, 30.493, 17.8752)
+
+[node name="Area2D" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = SubResource("AtlasTexture_wmx41")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-13, 1, -13, 4, -9, 7, 9, 7, 12, 2, 12, -2, 6, -7, -1, -7, -6, -6, -12, -1)

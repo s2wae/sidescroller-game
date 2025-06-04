@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw6puea5muuu0"]
+
+[ext_resource type="FontFile" uid="uid://df0hmkwco4i1o" path="res://assets/Fonts/gomarice_auto_sharp_pencil.ttf" id="1_qpvh6"]
+
+[node name="HUD" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 19.0
+offset_top = 17.0
+offset_right = 159.0
+offset_bottom = 58.0
+theme_override_fonts/font = ExtResource("1_qpvh6")
+theme_override_font_sizes/font_size = 60
+text = "Lives: 3"
