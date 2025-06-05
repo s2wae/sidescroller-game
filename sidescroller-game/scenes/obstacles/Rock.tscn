@@ -6,7 +6,7 @@
 atlas = ExtResource("1_bpoff")
 region = Rect2(208.774, 192.408, 30.493, 17.8752)
 
-[node name="Area2D" type="Area2D"]
+[node name="Rock" type="Area2D" groups=["obstacle"]]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
