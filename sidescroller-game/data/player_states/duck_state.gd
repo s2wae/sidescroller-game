@@ -9,3 +9,10 @@ func Enter():
 
 func Exit():
 	pass
+
+
+func Update(_delta: float) -> void:
+	player.velocity.y += player.GRAVITY * _delta
+	player.velocity.y += player.DUCK_SPEED
+	if Input.is_action_just_released("duck"):
+		state_transition.emit(self, "run")

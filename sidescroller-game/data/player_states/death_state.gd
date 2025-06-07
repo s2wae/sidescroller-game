@@ -9,3 +9,6 @@ func Enter():
 
 func Exit():
 	pass
+
+func Update(_delta: float) -> void:
+	player.velocity.y += player.GRAVITY * _delta

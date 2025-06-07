@@ -6,39 +6,30 @@ const DUCK_SPEED : float = 300
 const GRAVITY : float = 1000
 
 @export var player_sprite : AnimatedSprite2D
-@export var run_col : CollisionShape2D
-@export var duck_col : CollisionShape2D
-@export var run_area : Area2D
-@export var duck_area : Area2D
+@export var player_col : CollisionShape2D
+@export var hurt_box : Area2D
+@export var fsm : FiniteStateMachine
+@export var hud : Control
 
-var is_hurt : bool = false
+var lives_label : Label
+var current_lives : int = 3
+
+func _ready() -> void:
+	lives_label = hud.get_node("Lives")
+	lives_label.text = "Lives: " + str(current_lives)
+	hurt_box.area_entered.connect(_on_hurt_box_area_entered)
 
 func _physics_process(delta: float) -> void:
-	if is_hurt == false:
-		velocity.y += GRAVITY * delta
-		
-		if Input.is_action_pressed("duck"):
-			player_sprite.play("duck")
-			run_col.disabled = true
-			velocity.y = DUCK_SPEED
-		
-		if is_on_floor():
-			if Input.is_action_pressed("jump"):
-				velocity.y = JUMP_SPEED
-			elif Input.is_action_pressed("duck"):
-				player_sprite.play("duck")
-				run_col.disabled = true
-			else:
-				player_sprite.play("run")
-				run_col.disabled = false
-	
 	move_and_slide()
 
-# TODO also try to fix this 
-func _on_running_area_area_entered(area: Area2D) -> void:
+
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+
+	current_lives = current_lives - 1
 	if area.is_in_group("obstacle"):
-		is_hurt = true
-		print("HELP")
-		player_sprite.play("hurt")
-		await get_tree().create_timer(.5).timeout
-	is_hurt = false
+		lives_label.text = "Lives: " + str(current_lives)
+
+	if current_lives <= 0:
+		current_lives = 0
+		lives_label.text = "Lives: " + str(current_lives)
+		fsm.force_change_state("death")

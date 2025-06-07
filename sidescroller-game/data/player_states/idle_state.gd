@@ -9,3 +9,9 @@ func Enter():
 
 func Exit():
 	pass
+
+
+func Update(_delta: float) -> void:
+	player.velocity.y += player.GRAVITY * _delta
+	if Input.is_action_pressed("start"):
+		state_transition.emit(self, "run")

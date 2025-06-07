@@ -5,6 +5,8 @@ var states : Dictionary = {}
 var current_state : State
 @export var initial_state : State
 
+# TODO casting in unreal 
+
 
 func _ready():
 	for child in get_children():

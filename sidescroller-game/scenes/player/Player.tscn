@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://ciool4fd46583" path="res://data/player_states/hurt_state.gd" id="8_5stf6"]
 [ext_resource type="Script" uid="uid://dcxs4cae01o3s" path="res://data/player_states/duck_state.gd" id="9_180ig"]
 [ext_resource type="Script" uid="uid://oyomqmioy6ou" path="res://data/player_states/death_state.gd" id="11_5stf6"]
+[ext_resource type="PackedScene" uid="uid://bw6puea5muuu0" path="res://scenes/player/HUD.tscn" id="13_20koh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5stf6"]
 atlas = ExtResource("2_7oing")
@@ -202,22 +203,20 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_180ig"]
+size = Vector2(13, 8)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2wvv"]
-size = Vector2(12, 19)
+size = Vector2(12.9542, 15.56)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3v2ag"]
-size = Vector2(12, 10)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qu4a1"]
-size = Vector2(12, 10)
-
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "run_col", "duck_col", "run_area", "duck_area") groups=["player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "player_col", "hurt_box", "fsm", "hud") groups=["player"]]
+collision_layer = 2049
 script = ExtResource("1_v6fml")
 player_sprite = NodePath("AnimatedSprite2D")
-run_col = NodePath("RunningArea/RunningCol")
-duck_col = NodePath("DuckingArea/DuckingCol")
-run_area = NodePath("RunningArea")
-duck_area = NodePath("DuckingArea")
+player_col = NodePath("PlayerCollision")
+hurt_box = NodePath("HurtBox")
+fsm = NodePath("Fsm")
+hud = NodePath("CanvasLayer/HUD")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -227,21 +226,17 @@ animation = &"death"
 frame = 3
 frame_progress = 1.0
 
-[node name="RunningArea" type="Area2D" parent="."]
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 2)
+shape = SubResource("RectangleShape2D_180ig")
 
-[node name="RunningCol" type="CollisionShape2D" parent="RunningArea"]
-position = Vector2(0, -3.5)
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(-1.52498, -1.72)
 shape = SubResource("RectangleShape2D_d2wvv")
-
-[node name="DuckingArea" type="Area2D" parent="."]
-
-[node name="DuckingCol" type="CollisionShape2D" parent="DuckingArea"]
-position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_3v2ag")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_qu4a1")
 
 [node name="Fsm" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("7_180ig")
@@ -251,13 +246,17 @@ initial_state = NodePath("Idle")
 script = ExtResource("6_pn6s4")
 player = NodePath("../..")
 
-[node name="Run" type="Node" parent="Fsm" node_paths=PackedStringArray("player")]
+[node name="Run" type="Node" parent="Fsm" node_paths=PackedStringArray("player", "hurt_box")]
 script = ExtResource("7_7oing")
 player = NodePath("../..")
+hurt_box = NodePath("../../HurtBox")
 
-[node name="Hurt" type="Node" parent="Fsm" node_paths=PackedStringArray("player")]
+[node name="Hurt" type="Node" parent="Fsm" node_paths=PackedStringArray("player", "player_sprite", "hurt_box_col", "hurt_timer")]
 script = ExtResource("8_5stf6")
 player = NodePath("../..")
+player_sprite = NodePath("../../AnimatedSprite2D")
+hurt_box_col = NodePath("../../HurtBox/CollisionShape2D")
+hurt_timer = NodePath("../../HurtTimer")
 
 [node name="Duck" type="Node" parent="Fsm" node_paths=PackedStringArray("player")]
 script = ExtResource("9_180ig")
@@ -267,4 +266,10 @@ player = NodePath("../..")
 script = ExtResource("11_5stf6")
 player = NodePath("../..")
 
-[connection signal="area_entered" from="RunningArea" to="." method="_on_running_area_area_entered"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("13_20koh")]
+
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true

@@ -1,17 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://57t2k7okdbu8"]
+[gd_scene load_steps=5 format=3 uid="uid://57t2k7okdbu8"]
 
 [ext_resource type="Script" uid="uid://dsxoafp74jljs" path="res://data/main/main.gd" id="1_dc040"]
 [ext_resource type="PackedScene" uid="uid://0bj4n3fabbnq" path="res://scenes/background/Floor.tscn" id="2_1rhdn"]
 [ext_resource type="PackedScene" uid="uid://bgevve16w4epk" path="res://scenes/background/Background.tscn" id="3_sjxhf"]
 [ext_resource type="PackedScene" uid="uid://bxrshqvumefha" path="res://scenes/player/Player.tscn" id="4_ko0rf"]
-[ext_resource type="PackedScene" uid="uid://bw6puea5muuu0" path="res://scenes/player/HUD.tscn" id="5_ostsq"]
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("camera", "player", "floor", "hud")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("camera", "player", "floor")]
 script = ExtResource("1_dc040")
 camera = NodePath("Camera2D")
 player = NodePath("Player")
 floor = NodePath("Floor")
-hud = NodePath("CanvasLayer/HUD")
 
 [node name="Floor" parent="." instance=ExtResource("2_1rhdn")]
 top_level = true
@@ -23,9 +21,5 @@ position = Vector2(-464, -402.735)
 position = Vector2(-385, 287)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-306, 301)
-zoom = Vector2(5, 5)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HUD" parent="CanvasLayer" instance=ExtResource("5_ostsq")]
+position = Vector2(-311, 279)
+zoom = Vector2(4.5, 4.5)
